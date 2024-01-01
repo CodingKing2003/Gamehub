@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useIsClient } from "usehooks-ts";
 import { useSidebar } from "@/store/use-sidebar";
 import React, { useEffect, useState } from "react";
 import { ToggleSkeleton } from "./toggle";
@@ -12,11 +13,7 @@ interface WrapperProps {
 
 const Wrapper = ({ children }: WrapperProps) => {
   const { collapsed } = useSidebar((state) => state);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  });
+  const isClient = useIsClient();
 
   if (!isClient) {
     return (
