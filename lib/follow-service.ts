@@ -1,11 +1,11 @@
 import { db } from "@/lib/db";
 import { getSelf } from "@/lib/auth-service";
 
-export const getFollowedUser = async () => {
+export const getFollowedUsers = async () => {
   try {
     const self = await getSelf();
 
-    const followedUsers = await db.follow.findMany({
+    const followedUsers = db.follow.findMany({
       where: {
         followerId: self.id,
         following: {
@@ -18,16 +18,31 @@ export const getFollowedUser = async () => {
       },
       include: {
         following: {
-          include:{
-            stream:true,
-          }
+          include: {
+            stream: {
+              select: {
+                isLive: true,
+              },
+            },
+          },
         },
-        
       },
+      orderBy: [
+        {
+          following: {
+            stream: {
+              isLive: "desc",
+            },
+          },
+        },
+        {
+          createdAt: "desc"
+        },
+      ]
     });
 
     return followedUsers;
-  } catch (error) {
+  } catch {
     return [];
   }
 };
@@ -56,7 +71,7 @@ export const isFollowingUser = async (id: string) => {
     });
 
     return !!existingFollow;
-  } catch (error) {
+  } catch {
     return false;
   }
 };
@@ -65,9 +80,7 @@ export const followUser = async (id: string) => {
   const self = await getSelf();
 
   const otherUser = await db.user.findUnique({
-    where: {
-      id,
-    },
+    where: { id },
   });
 
   if (!otherUser) {
@@ -95,8 +108,8 @@ export const followUser = async (id: string) => {
       followingId: otherUser.id,
     },
     include: {
-      follower: true,
       following: true,
+      follower: true,
     },
   });
 
