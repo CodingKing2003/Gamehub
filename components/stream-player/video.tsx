@@ -38,7 +38,9 @@ const Video = ({hostName,hostIdentity}:VideoProps) => {
 
 
   return (
-    <div className=' aspect-video border-b group relative'>{content}</div>
+    <div className="aspect-video border-b group relative">
+      {content}
+    </div>
   )
 }
 
