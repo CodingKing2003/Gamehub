@@ -1,12 +1,15 @@
-import { UserButton } from '@clerk/nextjs'
-import React from 'react'
+
+import React, { Suspense } from 'react'
+import Results, { ResultsSkeleton } from './_components/results'
 
 
 
 const page = () => {
   return (
-    <div>
-        Home
+    <div className='h-full p-8 max-w-screen-2xl mx-auto'>
+        <Suspense fallback={<ResultsSkeleton />}>
+          <Results />
+        </Suspense>
     </div>
   )
 }
