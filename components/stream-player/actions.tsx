@@ -41,7 +41,7 @@ const Actions = ({ hostIdentity, isFollowing, isHost }: ActionsProps) => {
     });
   };
 
-  const togleFollow = () => {
+  const toggleFollow = () => {
     if (!userId) {
       return router.push("/sign-in");
     }
@@ -60,6 +60,7 @@ const Actions = ({ hostIdentity, isFollowing, isHost }: ActionsProps) => {
       variant="primary"
       size="sm"
       className="w-full lg:w-auto"
+      onClick={toggleFollow}
     >
       <Heart
         className={cn("h-4 w-4 mr-2", isFollowing ? "fill-white" : "fill-none")}
